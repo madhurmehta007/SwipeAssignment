@@ -13,6 +13,7 @@
         <action
             android:id="@+id/action_productListFragment_to_addProductFragment"
             app:destination="@id/nav_addProduct"
+            app:popUpTo="@id/nav_addProduct"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -23,6 +24,7 @@
         <action
             android:id="@+id/action_addProductFragment_to_productListFragment"
             app:destination="@id/nav_productList"
+            app:popUpTo="@id/nav_productList"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>

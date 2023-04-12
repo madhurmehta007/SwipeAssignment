@@ -32,7 +32,6 @@ class ProductListAdapter(
 
         val product = productList[position]
 
-
         holder.binding.tvName.text = "Name: "+product.product_name
         if(product.image.isEmpty()) {
            Picasso.get().load(R.drawable.product).into(holder.binding.ivProduct)
