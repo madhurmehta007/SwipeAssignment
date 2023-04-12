@@ -7,15 +7,18 @@ import androidx.lifecycle.viewModelScope
 import dev.work.swipeproduct.models.PostResponse
 import dev.work.swipeproduct.networking.Repository
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 class AddProductViewModel(private val repository: Repository):ViewModel() {
 
     var myResponse:MutableLiveData<Response<PostResponse>> = MutableLiveData()
 
-    fun pushPost2(price:Double,product_name:String,product_type:String,tax:Double){
+    fun pushPost2(price:Double,product_name:RequestBody,product_type:RequestBody,tax:Double,image:MultipartBody.Part){
         viewModelScope.launch {
-            val response = repository.pushPost2(price,product_name,product_type,tax)
+            val response = repository.pushPost2(price,product_name,product_type,tax,image)
             myResponse.value = response
         }
     }
