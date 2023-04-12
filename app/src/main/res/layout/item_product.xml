@@ -11,7 +11,7 @@
         android:id="@+id/cvProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/material_blue"
+        android:backgroundTint="@color/material_red"
         app:strokeColor="@color/material_blue"
         app:strokeWidth="0.5dp"
         android:outlineAmbientShadowColor="@color/material_blue"
@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="270dp"
             android:layout_gravity="center"
-
             android:paddingVertical="5dp"
             android:paddingStart="7dp"
             android:paddingEnd="7dp"
@@ -32,7 +31,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvProductImage"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginTop="5dp"
                 app:cardCornerRadius="10dp"
@@ -53,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_weight="10"
+
                 android:orientation="vertical">
 
                 <TextView
@@ -63,6 +62,7 @@
                     android:text="Product Name:"
                     android:layout_weight="1"
                     android:textSize="14sp"
+                    android:layout_marginVertical="5dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/sofiaprosoftbold"
                     android:layout_marginLeft="10dp"
@@ -73,8 +73,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:maxLines="15"
                     android:textSize="16sp"
+                    android:paddingRight="10dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:fontFamily="@font/sofiaprosoftmediumitalic"

@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        window.setStatusBarColor(this.getResources().getColor(R.color.material_blue))
+        window.setStatusBarColor(this.getResources().getColor(R.color.material_red))
         setContentView(binding.root)
 
     }

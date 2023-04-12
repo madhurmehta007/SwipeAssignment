@@ -31,18 +31,19 @@ class ProductListAdapter(
     override fun onBindViewHolder(holder:ProductViewHolder,position:Int){
 
         val product = productList[position]
-        val imageUrl:String = Picasso.get().load(product.image).toString()
 
-        holder.binding.tvName.text = product.product_name
-        if (imageUrl.isEmpty()) {
-            holder.binding.ivProduct.setImageResource(R.drawable.product)
+
+        holder.binding.tvName.text = "Name: "+product.product_name
+        if(product.image.isEmpty()) {
+           Picasso.get().load(R.drawable.product).into(holder.binding.ivProduct)
             }
-
+        else{
+            Picasso.get().load(product.image).into(holder.binding.ivProduct)
+        }
         holder.binding.ivProduct.setImageResource(R.drawable.product)
-
-        holder.binding.tvPrice.text = product.price.toString()
-        holder.binding.tvProductType.text = product.product_type
-        holder.binding.tvTax.text = product.tax.toString()
+        holder.binding.tvPrice.text = "Price: "+product.price.toString()
+        holder.binding.tvProductType.text = "Category: "+product.product_type
+        holder.binding.tvTax.text = "Tax: "+product.tax.toString()
     }
 
     override fun getItemCount():Int{

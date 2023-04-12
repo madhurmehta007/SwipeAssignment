@@ -23,16 +23,18 @@ class AddProductFragment : Fragment() {
     ): View? {
         _binding = FragmentAddProductBinding.inflate(inflater, container, false)
 
-//        binding.btnList.setOnClickListener {
-//
-//       findNavController().navigate(R.id.action_addProductFragment_to_productListFragment)
-//
-//        }
+        binding.fabCheck.setOnClickListener {
+
+       findNavController().navigate(R.id.action_addProductFragment_to_productListFragment)
+
+        }
 
 
         return binding.root
     }
 
+private fun AddProduct(){
 
+}
 
 }

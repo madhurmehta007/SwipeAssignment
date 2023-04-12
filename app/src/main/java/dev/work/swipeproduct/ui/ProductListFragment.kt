@@ -1,5 +1,6 @@
 package dev.work.swipeproduct.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ class ProductListFragment : Fragment() {
         Repository()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,7 +54,7 @@ class ProductListFragment : Fragment() {
 
                 productListAdapter = ProductListAdapter(requireContext(),pData)
 
-                var adapter = productListAdapter
+                val adapter = productListAdapter
 
                 adapter.notifyDataSetChanged()
                 binding.rvProducts.setHasFixedSize(true)

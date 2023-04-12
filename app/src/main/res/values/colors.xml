@@ -12,4 +12,5 @@
     <color name="material_blue">#548EFF</color>
     <color name="material_green">#96FF8D</color>
     <color name="blueMain">#0668E1</color>
+    <color name="cardBackground">#FF1A4B</color>
 </resources>
