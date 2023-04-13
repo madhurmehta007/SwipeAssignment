@@ -22,6 +22,12 @@ class AddProductViewModel(private val repository: Repository):ViewModel() {
             myResponse.value = response
         }
     }
+    fun postWithoutImage(price: Double,product_name: RequestBody,product_type: RequestBody,tax: Double){
+        viewModelScope.launch {
+            val response2 = repository.postWithoutImage(price,product_name,product_type,tax)
+            myResponse.value = response2
+        }
+    }
 }
 
 class AddProductViewModelFactory(val repository: Repository): ViewModelProvider.Factory{

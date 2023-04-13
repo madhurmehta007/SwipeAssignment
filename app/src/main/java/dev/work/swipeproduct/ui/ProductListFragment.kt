@@ -2,10 +2,10 @@ package dev.work.swipeproduct.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -23,21 +23,24 @@ import dev.work.swipeproduct.networking.Repository
 import dev.work.swipeproduct.viewmodel.ProductListViewModel
 import dev.work.swipeproduct.viewmodel.ProductViewModelFactory
 import kotlinx.coroutines.launch
+import java.util.*
 
-private lateinit var productListViewModel: ProductListViewModel
-private lateinit var productListAdapter: ProductListAdapter
+
 
 class ProductListFragment : Fragment() {
     private var _binding: FragmentProductListBinding? = null
     private val binding
         get() = _binding!!
 
+    private lateinit var productListViewModel: ProductListViewModel
+    private lateinit var productListAdapter: ProductListAdapter
+    var pData = ArrayList<ProductDataItem>()
 
     private val repository: Repository by lazy {
         Repository()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,9 +51,12 @@ class ProductListFragment : Fragment() {
 
         productListViewModel.getProducts()
 
-        viewLifecycleOwner.lifecycleScope.launch {
+        val loadProgress = binding.shimmerEffect
+
             productListViewModel.productResponse.observe(viewLifecycleOwner, Observer {
-                val pData : MutableList<ProductDataItem> =  it.body()?.toMutableList() as MutableList<ProductDataItem>
+                pData  =  it.body() as ArrayList<ProductDataItem>
+
+                loadProgress.visibility = View.GONE
 
                 productListAdapter = ProductListAdapter(requireContext(),pData)
 
@@ -61,15 +67,51 @@ class ProductListFragment : Fragment() {
                 binding.rvProducts.adapter = adapter
                 binding.rvProducts.layoutManager = GridLayoutManager(context,2)
                 adapter.notifyDataSetChanged()
+
+
             })
-        }
+
 
         binding.fabAddProduct.setOnClickListener {
             findNavController().navigate(R.id.action_productListFragment_to_addProductFragment)
 
         }
 
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterList(newText)
+                return true
+            }
+
+        })
+
         return binding.root
     }
 
+    private fun filterList(query: String?) {
+        if (query != null) {
+            val filteredList = ArrayList<ProductDataItem>()
+            for (i in pData) {
+                if (i.product_name.lowercase(Locale.ROOT).contains(query.lowercase(Locale.ROOT))) {
+                    filteredList.add(i)
+                }
+            }
+
+            if (filteredList.isEmpty()) {
+                binding.rvProducts.visibility = View.INVISIBLE
+                binding.lottie.visibility = View.VISIBLE
+                binding.tvProductNotFound.visibility = View.VISIBLE
+            } else {
+                binding.lottie.visibility = View.INVISIBLE
+                binding.tvProductNotFound.visibility = View.INVISIBLE
+                binding.rvProducts.visibility = View.VISIBLE
+                productListAdapter.setFilteredList(filteredList)
+
+            }
+        }
+    }
 }

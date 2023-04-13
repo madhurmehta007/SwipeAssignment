@@ -11,7 +11,7 @@ import dev.work.swipeproduct.models.ProductDataItem
 
 class ProductListAdapter(
     val context:Context,
-    val productList:MutableList<ProductDataItem>
+    var productList:MutableList<ProductDataItem>
 ):
     RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>()
 {
@@ -43,9 +43,19 @@ class ProductListAdapter(
         holder.binding.tvPrice.text = "Price: "+product.price.toString()
         holder.binding.tvProductType.text = "Category: "+product.product_type
         holder.binding.tvTax.text = "Tax: "+product.tax.toString()
+
+        holder.binding.cvProduct.animation = android.view.animation.AnimationUtils.loadAnimation(
+            holder.itemView.context,
+            R.anim.setting_anim
+        )
     }
 
     override fun getItemCount():Int{
         return productList.size
+    }
+
+    fun setFilteredList(productList: MutableList<ProductDataItem>){
+        this.productList = productList
+        notifyDataSetChanged()
     }
 }

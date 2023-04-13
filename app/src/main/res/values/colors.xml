@@ -9,8 +9,15 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="material_red">#FF6767</color>
+    <color name="material_red_light">#FFD8D8</color>
     <color name="material_blue">#548EFF</color>
+    <color name="material_blue_light">#D7D5F6FF</color>
     <color name="material_green">#96FF8D</color>
     <color name="blueMain">#0668E1</color>
     <color name="cardBackground">#FF1A4B</color>
+
+    <!--SnackBar Colors-->
+    <color name="colorSuccess">#4caf50</color>
+    <color name="colorError">#d32f2f</color>
+    <color name="colorWarning">#ff9800</color>
 </resources>

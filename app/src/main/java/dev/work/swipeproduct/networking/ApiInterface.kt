@@ -23,4 +23,13 @@ interface ApiInterface {
         @Part image: MultipartBody.Part
     ):Response<PostResponse>
 
+    @Multipart
+    @POST("add")
+    suspend fun postWithoutImage(
+        @Part("price") price:Double,
+        @Part("product_name") product_name:RequestBody,
+        @Part("product_type") product_type:RequestBody,
+        @Part("tax") tax:Double,
+    ):Response<PostResponse>
+
 }

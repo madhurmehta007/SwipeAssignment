@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import dev.work.swipeproduct.R
 import dev.work.swipeproduct.databinding.FragmentAddProductBinding
 import dev.work.swipeproduct.networking.Repository
+import dev.work.swipeproduct.utils.Snacker
 import dev.work.swipeproduct.viewmodel.AddProductViewModel
 import dev.work.swipeproduct.viewmodel.AddProductViewModelFactory
 import kotlinx.coroutines.launch
@@ -38,7 +39,7 @@ class AddProductFragment : Fragment() {
     private var _binding: FragmentAddProductBinding? = null
     private val binding
         get() = _binding!!
-    lateinit var imageUri: Uri
+    var imageUri: Uri? = null
     private val repository: Repository by lazy {
         Repository()
     }
@@ -61,7 +62,11 @@ class AddProductFragment : Fragment() {
 
 
         binding.fabCheck.setOnClickListener {
-            AddProduct()
+            if (binding.etProductName.text!!.isEmpty() || binding.etProductPrice.text!!.isEmpty() || binding.etProductType.text!!.isEmpty() || binding.etProductTax.text!!.isEmpty()) {
+                Snacker(it, "Please enter all fields").error()
+            } else {
+                AddProduct()
+            }
 
         }
 
@@ -81,18 +86,23 @@ class AddProductFragment : Fragment() {
             val productType: String = binding.etProductType.text.toString()
             val type: RequestBody = productType.toRequestBody("text/plain".toMediaTypeOrNull())
             val productTax: Double = binding.etProductTax.text.toString().toDouble()
+            val image: MultipartBody.Part?
 
-
-            val fileDir = requireContext().filesDir
+            val fileDir = requireActivity().filesDir
             val file = File(fileDir, "image.png")
-            val inputStream = activity?.contentResolver?.openInputStream(imageUri)
-            val outputStream = FileOutputStream(file)
-            inputStream!!.copyTo(outputStream)
 
-            val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-            val image = MultipartBody.Part.createFormData("files[]", file.name, requestBody)
+            if (imageUri == null) {
+                addProductViewModel.postWithoutImage(productPrice, name, type, productTax)
+            } else {
 
-            addProductViewModel.pushPost2(productPrice, name, type, productTax, image)
+                val inputStream = requireActivity().contentResolver.openInputStream(imageUri!!)
+                val outputStream = FileOutputStream(file)
+                inputStream!!.copyTo(outputStream)
+
+                val requestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
+                image = MultipartBody.Part.createFormData("files[]", file.name, requestBody)
+                addProductViewModel.pushPost2(productPrice, name, type, productTax, image)
+            }
 
             addProductViewModel.myResponse.observe(viewLifecycleOwner, Observer { response ->
                 if (response.isSuccessful) {
@@ -100,6 +110,7 @@ class AddProductFragment : Fragment() {
                     Log.d("Main", response.code().toString())
                     Log.d("Main", response.message())
                     findNavController().navigate(R.id.action_addProductFragment_to_productListFragment)
+                    Toast.makeText(context, "Product Added", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
                 }
