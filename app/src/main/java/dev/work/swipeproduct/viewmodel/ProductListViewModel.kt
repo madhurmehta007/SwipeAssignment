@@ -1,13 +1,16 @@
 package dev.work.swipeproduct.viewmodel
 
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.work.swipeproduct.models.ProductData
 import dev.work.swipeproduct.models.ProductDataItem
 import dev.work.swipeproduct.networking.Repository
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import javax.inject.Inject
 
-class ProductListViewModel(private val repository:Repository):ViewModel() {
+@HiltViewModel
+class ProductListViewModel @Inject constructor(private val repository:Repository):ViewModel() {
 
     private val _productResponse = MutableLiveData<Response<List<ProductDataItem>>>()
     val productResponse: MutableLiveData<Response<List<ProductDataItem>>> get() = _productResponse

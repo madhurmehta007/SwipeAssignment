@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.work.swipeproduct.models.PostResponse
 import dev.work.swipeproduct.networking.Repository
 import kotlinx.coroutines.launch
@@ -11,8 +12,10 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
+import javax.inject.Inject
 
-class AddProductViewModel(private val repository: Repository):ViewModel() {
+@HiltViewModel
+class AddProductViewModel @Inject constructor(private val repository: Repository):ViewModel() {
 
     var myResponse:MutableLiveData<Response<PostResponse>> = MutableLiveData()
 

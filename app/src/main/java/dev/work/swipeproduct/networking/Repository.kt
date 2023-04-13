@@ -6,12 +6,13 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
+import javax.inject.Inject
 
 
-class Repository {
+class Repository @Inject constructor(private val apiInterface: ApiInterface) {
 
     suspend fun getLatestProducts(): Response<List<ProductDataItem>> {
-        return RetrofitInstance.api.getProducts()
+        return apiInterface.getProducts()
     }
 
     suspend fun pushPost2(
@@ -21,7 +22,7 @@ class Repository {
         tax: Double,
         image: MultipartBody.Part
     ): Response<PostResponse> {
-        return RetrofitInstance.api.pushPost2(price, product_name, product_type, tax, image)
+        return apiInterface.pushPost2(price, product_name, product_type, tax, image)
     }
 
     suspend fun postWithoutImage(
@@ -30,7 +31,7 @@ class Repository {
         product_type: RequestBody,
         tax: Double
     ): Response<PostResponse> {
-        return RetrofitInstance.api.postWithoutImage(price, product_name, product_type, tax)
+        return apiInterface.postWithoutImage(price, product_name, product_type, tax)
     }
 
 

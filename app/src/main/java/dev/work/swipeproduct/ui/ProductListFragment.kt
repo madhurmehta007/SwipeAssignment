@@ -6,13 +6,16 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import dagger.hilt.android.AndroidEntryPoint
 import dev.work.swipeproduct.R
 import dev.work.swipeproduct.adapter.ProductListAdapter
 import dev.work.swipeproduct.databinding.FragmentAddProductBinding
@@ -26,19 +29,16 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-
+@AndroidEntryPoint
 class ProductListFragment : Fragment() {
     private var _binding: FragmentProductListBinding? = null
     private val binding
         get() = _binding!!
 
-    private lateinit var productListViewModel: ProductListViewModel
     private lateinit var productListAdapter: ProductListAdapter
     var pData = ArrayList<ProductDataItem>()
 
-    private val repository: Repository by lazy {
-        Repository()
-    }
+
 
     @SuppressLint("NotifyDataSetChanged", "SuspiciousIndentation")
     override fun onCreateView(
@@ -47,11 +47,12 @@ class ProductListFragment : Fragment() {
     ): View? {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
 
-        productListViewModel = ViewModelProvider(this, ProductViewModelFactory(repository))[ProductListViewModel::class.java]
+       val productListViewModel : ProductListViewModel by viewModels()
 
         productListViewModel.getProducts()
 
         val loadProgress = binding.shimmerEffect
+        binding.lottie.visibility = View.INVISIBLE
 
             productListViewModel.productResponse.observe(viewLifecycleOwner, Observer {
                 pData  =  it.body() as ArrayList<ProductDataItem>

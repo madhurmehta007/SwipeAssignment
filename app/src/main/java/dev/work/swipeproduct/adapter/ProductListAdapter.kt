@@ -34,12 +34,12 @@ class ProductListAdapter(
 
         holder.binding.tvName.text = "Name: "+product.product_name
         if(product.image.isEmpty()) {
-           Picasso.get().load(R.drawable.product).into(holder.binding.ivProduct)
+           Picasso.get().load(R.drawable.no_image_available).into(holder.binding.ivProduct)
             }
         else{
             Picasso.get().load(product.image).into(holder.binding.ivProduct)
         }
-        holder.binding.ivProduct.setImageResource(R.drawable.product)
+        holder.binding.ivProduct.setImageResource(R.drawable.no_image_available)
         holder.binding.tvPrice.text = "Price: "+product.price.toString()
         holder.binding.tvProductType.text = "Category: "+product.product_type
         holder.binding.tvTax.text = "Tax: "+product.tax.toString()

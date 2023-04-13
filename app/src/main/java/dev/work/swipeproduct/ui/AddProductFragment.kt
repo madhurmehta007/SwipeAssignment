@@ -9,16 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import dev.work.swipeproduct.R
 import dev.work.swipeproduct.databinding.FragmentAddProductBinding
 import dev.work.swipeproduct.networking.Repository
 import dev.work.swipeproduct.utils.Snacker
 import dev.work.swipeproduct.viewmodel.AddProductViewModel
 import dev.work.swipeproduct.viewmodel.AddProductViewModelFactory
+import dev.work.swipeproduct.viewmodel.ProductListViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -32,17 +35,16 @@ import java.io.FileOutputStream
 import java.lang.reflect.Type
 
 
-private lateinit var addProductViewModel: AddProductViewModel
 
+
+@AndroidEntryPoint
 class AddProductFragment : Fragment() {
 
     private var _binding: FragmentAddProductBinding? = null
     private val binding
         get() = _binding!!
     var imageUri: Uri? = null
-    private val repository: Repository by lazy {
-        Repository()
-    }
+
 
     private val contract = registerForActivityResult(ActivityResultContracts.GetContent()) {
         imageUri = it!!
@@ -54,11 +56,6 @@ class AddProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAddProductBinding.inflate(inflater, container, false)
-
-        addProductViewModel = ViewModelProvider(
-            this,
-            AddProductViewModelFactory(repository)
-        )[AddProductViewModel::class.java]
 
 
         binding.fabCheck.setOnClickListener {
@@ -79,6 +76,8 @@ class AddProductFragment : Fragment() {
     }
 
     private fun AddProduct() {
+        val addProductViewModel : AddProductViewModel by viewModels()
+
         viewLifecycleOwner.lifecycleScope.launch {
             val productPrice: Double = binding.etProductPrice.text.toString().toDouble()
             val productName: String = binding.etProductName.text.toString()
